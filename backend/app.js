@@ -1,0 +1,49 @@
+const express = require("express");
+const app = express();
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const path = require("path")
+
+// if (process.env.NODE_ENV !== "PRODUCTION") {
+//     require("dotenv").config({ path: "backend/db/config.env" });
+//   }
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(cookieParser());
+
+const product = require("./routes/ProdectRoute");
+const user = require("./routes/userRoute");
+const order = require("./routes/OrderRoute");
+const coupon = require("./routes/CouponRoute");
+const cart = require("./routes/CartRoute");
+
+app.use("/api/v1", product);
+app.use("/api/v1", user);
+app.use("/api/v1", order);
+app.use("/api/v1", coupon);
+app.use("/api/v1", cart);
+
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, "../public")));
+
+// API health check endpoint
+app.get("/api/health", (req, res) => {
+    res.json({ 
+        status: "OK", 
+        message: "SoleStyle Backend API is running",
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Catch-all handler for API routes
+app.get("*", (req, res) => {
+    res.status(404).json({ 
+        error: "API endpoint not found",
+        message: "Please check your API endpoint URL"
+    });
+});
+ 
+module.exports = app;
