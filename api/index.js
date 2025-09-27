@@ -1,7 +1,6 @@
 // Load environment variables for Vercel
 require('dotenv').config();
 
-// Simple test endpoint for Vercel
 const express = require('express');
 const app = express();
 
@@ -9,27 +8,52 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Test endpoint
+// Test endpoint - should work without any dependencies
 app.get('/api/test', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'Vercel serverless function is working',
+    timestamp: new Date().toISOString(),
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      DB_URI: process.env.DB_URI ? 'Set' : 'Not Set'
+    }
+  });
+});
+
+// Simple products endpoint without database
+app.get('/api/v1/products', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Products endpoint working',
+    data: [
+      { id: 1, name: 'Test Product 1', price: 100 },
+      { id: 2, name: 'Test Product 2', price: 200 }
+    ]
+  });
+});
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'API is healthy',
     timestamp: new Date().toISOString()
   });
 });
 
-// Import and use your main app routes
-try {
-  const mainApp = require("../backend/app.js");
-  app.use('/', mainApp);
-} catch (error) {
-  console.error('Error loading main app:', error);
-  app.get('*', (req, res) => {
-    res.status(500).json({ 
-      error: 'App loading failed', 
-      message: error.message 
-    });
+// Catch all other routes
+app.get('*', (req, res) => {
+  res.json({
+    message: 'SoleStyle API',
+    endpoints: [
+      'GET /api/test',
+      'GET /api/health', 
+      'GET /api/v1/products'
+    ],
+    path: req.path
   });
-}
+});
 
 module.exports = app;
