@@ -13,7 +13,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 
 const product = require("./routes/ProdectRoute");
-const user = require("./routes/userRoute");
+const user = require("./routes/UserRoute");
 const order = require("./routes/OrderRoute");
 const coupon = require("./routes/CouponRoute");
 const cart = require("./routes/CartRoute");
