@@ -3,9 +3,15 @@ const dotenv = require('dotenv')
 const connect = require("./db/connect.js");
 const cloudinary = require("cloudinary");
 
-// Load environment variables first
-dotenv.config({ path: "backend/db/config.env" });
+// Load environment variables - try both local and Vercel
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: "backend/db/config.env" });
+} else {
+  // In production (Vercel), environment variables are already loaded
+  console.log('Using production environment variables');
+}
 
+// Connect to database
 connect();
 
 // Configure Cloudinary
@@ -14,7 +20,15 @@ cloudinary.config({
   api_key: process.env.APIKEY,
   api_secret: process.env.APISECRET,
 });
+
 const PORT = process.env.PORT || 4000;
-const server = app.listen(PORT, () => {
-  console.log(`Server is working on port ${PORT}`);
-});
+
+// For Vercel serverless functions, export the app directly
+if (process.env.NODE_ENV === 'production') {
+  module.exports = app;
+} else {
+  // For local development, start the server
+  const server = app.listen(PORT, () => {
+    console.log(`Server is working on port ${PORT}`);
+  });
+}
