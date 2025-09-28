@@ -6,7 +6,6 @@ const cloudinary = require("cloudinary");
 
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     let images = [];
-    console.log(req.body);
 
     if (typeof req.body.productImageGallery === "string") {
         images.push(req.body.productImageGallery);
@@ -62,9 +61,7 @@ exports.getAllProductsAdmin = catchAsyncErrors(async (req, res, next) => {
 });
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     try {
-        console.log('Getting all products...');
         let ProductAll = await Product.find()
-        console.log('Products found:', ProductAll.length);
         let visibleProducts = ProductAll.filter(product => product.display === true);
         res.status(200).json({
             success: true,
@@ -72,7 +69,6 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
             visibleProductscount: visibleProducts.length
         })
     } catch (error) {
-        console.error('Error in getAllProducts:', error);
         res.status(500).json({
             success: false,
             message: 'Database connection error',

@@ -6,14 +6,11 @@ const cloudinary = require("cloudinary");
 // Load environment variables - try both local and Vercel
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: "backend/db/config.env" });
-} else {
-  // In production (Vercel), environment variables are already loaded
-  console.log('Using production environment variables');
 }
 
 // Connect to database
 connect().catch(error => {
-  console.error('Failed to connect to database:', error);
+  // Database connection error handled silently
 });
 
 // Configure Cloudinary
