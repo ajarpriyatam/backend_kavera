@@ -61,13 +61,24 @@ exports.getAllProductsAdmin = catchAsyncErrors(async (req, res, next) => {
     })
 });
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-    let ProductAll = await Product.find()
-    let visibleProducts = ProductAll.filter(product => product.display === true);
-    res.status(200).json({
-        success: true,
-        visibleProducts,
-        visibleProductscount: visibleProducts.length
-    })
+    try {
+        console.log('Getting all products...');
+        let ProductAll = await Product.find()
+        console.log('Products found:', ProductAll.length);
+        let visibleProducts = ProductAll.filter(product => product.display === true);
+        res.status(200).json({
+            success: true,
+            visibleProducts,
+            visibleProductscount: visibleProducts.length
+        })
+    } catch (error) {
+        console.error('Error in getAllProducts:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Database connection error',
+            error: error.message
+        });
+    }
 });
 exports.getTopRatedProducts = catchAsyncErrors(async (req, res, next) => {
     let ProductAll = await Product.find()
