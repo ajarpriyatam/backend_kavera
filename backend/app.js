@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.get("/api/health", (req, res) => {
     res.json({ 
         status: "OK", 
-        message: "SoleStyle Backend API is running",
+        message: "Candle Backend API is running",
         timestamp: new Date().toISOString()
     });
 });

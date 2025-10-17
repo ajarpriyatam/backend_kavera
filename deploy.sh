@@ -4,7 +4,7 @@ echo "🚀 Starting deployment process..."
 
 # Build frontend
 echo "📦 Building frontend..."
-cd SoleStyle
+cd Candle-Backend
 npm run build
 cd ..
 
