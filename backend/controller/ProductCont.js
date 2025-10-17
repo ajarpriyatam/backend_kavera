@@ -110,6 +110,29 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
         product,
     });
 });
+exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
+    const { category } = req.params;
+    
+    try {
+        const products = await Product.find({ 
+            category: { $regex: category, $options: 'i' },
+            display: true 
+        });
+        
+        res.status(200).json({
+            success: true,
+            products,
+            productsCount: products.length
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Database connection error',
+            error: error.message
+        });
+    }
+});
+
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
 

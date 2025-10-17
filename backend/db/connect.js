@@ -1,23 +1,27 @@
 const mongoose = require("mongoose");
 
-const connect = () => {
-  // Check if already connected
-  if (mongoose.connection.readyState === 1) {
-    return Promise.resolve();
-  }
-  
-  return mongoose.connect(process.env.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-  })
-  .then((data) => {
-    return data;
-  })
-  .catch((error) => {
+const connect = async () => {
+  try {
+    if (mongoose.connection.readyState === 1) {
+      console.log("Already connected to MongoDB");
+      return;
+    }
+    
+    console.log("Attempting to connect to MongoDB...");
+    console.log("DB_URI:", process.env.DB_URI ? "Set" : "Not set");
+    
+    await mongoose.connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    });
+    
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
     throw error;
-  });
+  }
 };
 
 module.exports = connect;

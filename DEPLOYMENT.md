@@ -30,7 +30,7 @@
 4. Set Root Directory to: `SoleStyle`
 5. Add Environment Variable:
    ```
-   REACT_APP_API_URL=https://your-backend-url.railway.app/api/v1
+   REACT_APP_API_URL=https://your-backend-url.railway.app/api/v2
    ```
 6. Deploy!
 
@@ -57,7 +57,7 @@
    - Publish Directory: `build`
 4. Add environment variable:
    ```
-   REACT_APP_API_URL=https://your-backend-url.onrender.com/api/v1
+   REACT_APP_API_URL=https://your-backend-url.onrender.com/api/v2
    ```
 5. Deploy!
 
@@ -78,7 +78,7 @@ APISECRET=1uFYtzsMypltZgAC1jpPoFvG65g
 
 ### Frontend (.env):
 ```
-REACT_APP_API_URL=https://your-backend-url.railway.app/api/v1
+REACT_APP_API_URL=https://your-backend-url.railway.app/api/v2
 ```
 
 ## Quick Commands

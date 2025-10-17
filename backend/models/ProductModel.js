@@ -13,13 +13,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please Enter product Price"],
   },
-  sizes: [{
+  scent: [{
     type: String,
-    required: [true, "Please Enter product Size"],
-  }],
-  colors: [{
-    type: String,
-    required: [true, "Please Enter product Color"],
+    required: [true, "Please Enter product scent"],
   }],
   tokenId: {
     type: String,
@@ -33,18 +29,18 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, "Please Enter product display status"],
   },
-  productImageGallery: [
-    {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  // productImageGallery: [
+  //   {
+  //     public_id: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //     url: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //   },
+  // ],
   createdAt: {
     type: Date,
     default: Date.now,

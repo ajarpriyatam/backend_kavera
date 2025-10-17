@@ -16,13 +16,11 @@ const product = require("./routes/ProdectRoute");
 const user = require("./routes/UserRoute");
 const order = require("./routes/OrderRoute");
 const coupon = require("./routes/CouponRoute");
-const cart = require("./routes/CartRoute");
 
-app.use("/api/v1", product);
-app.use("/api/v1", user);
-app.use("/api/v1", order);
-app.use("/api/v1", coupon);
-app.use("/api/v1", cart);
+app.use("/api/v2", product);
+app.use("/api/v2", user);
+app.use("/api/v2", order);
+app.use("/api/v2", coupon);
 
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
 
