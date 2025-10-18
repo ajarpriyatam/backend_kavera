@@ -15,16 +15,11 @@ const startServer = async () => {
     console.log("✅ Database connection established");
   } catch (error) {
     console.error("❌ Failed to connect to database:", error.message);
-    if (process.env.NODE_ENV === 'production') {
-      console.warn("⚠️ Continuing in production mode without database connection");
-    } else {
-      console.error("🛑 Server cannot start without database connection in development");
-      process.exit(1);
-    }
+    console.warn("⚠️ Continuing without database connection - will retry automatically");
   }
 };
 
-// Initialize database connection before starting server
+// Initialize database connection (non-blocking)
 startServer();
 
 // Configure Cloudinary

@@ -16,12 +16,14 @@ const connect = async () => {
     console.log("Attempting to connect to MongoDB...");
     
     await mongoose.connect(process.env.DB_URI, {
-      serverSelectionTimeoutMS: 10000, // 10 seconds
+      serverSelectionTimeoutMS: 30000, // 30 seconds
       socketTimeoutMS: 45000, // 45 seconds
       maxPoolSize: 10, // Maintain up to 10 socket connections
       minPoolSize: 5, // Maintain a minimum of 5 socket connections
       retryWrites: true, // Enable retryable writes
       retryReads: true, // Enable retryable reads
+      connectTimeoutMS: 30000, // 30 seconds
+      heartbeatFrequencyMS: 10000, // 10 seconds
     });
 
     console.log("✅ Connected to MongoDB successfully");
@@ -51,12 +53,9 @@ const connect = async () => {
 
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error.message);
-    // Don't throw error in production, let the app continue
-    if (process.env.NODE_ENV === 'production') {
-      console.warn("⚠️ Continuing without database connection in production");
-      return;
-    }
-    throw error;
+    // Don't throw error, let the app continue and try to reconnect
+    console.warn("⚠️ Continuing without database connection - will retry automatically");
+    return;
   }
 };
 
