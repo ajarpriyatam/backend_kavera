@@ -27,6 +27,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     }
 
     req.body.productImageGallery = imagesLinks;
+    console.log(req.body);
     const product = await Product.create(req.body);
     res.status(201).json({
         success: true,
@@ -62,11 +63,11 @@ exports.getAllProductsAdmin = catchAsyncErrors(async (req, res, next) => {
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     try {
         let ProductAll = await Product.find()
-        let visibleProducts = ProductAll.filter(product => product.display === true);
+        let products = ProductAll.filter(product => product.display === true);
         res.status(200).json({
             success: true,
-            visibleProducts,
-            visibleProductscount: visibleProducts.length
+            products,
+            productsCount: products.length
         })
     } catch (error) {
         res.status(500).json({
@@ -81,7 +82,7 @@ exports.getTopRatedProducts = catchAsyncErrors(async (req, res, next) => {
     let productsCount = await Product.countDocuments();
     let products = [];
     for (let i = 0; i < productsCount; i++) {
-        if (ProductAll[i].token_id[0] == 'S') {
+        if (ProductAll[i].tokenId[0] == 'A') {
             products.push(ProductAll[i]);
         }
     }
@@ -123,6 +124,34 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
             success: true,
             products,
             productsCount: products.length
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Database connection error',
+            error: error.message
+        });
+    }
+});
+
+exports.getNewArrivals = catchAsyncErrors(async (req, res, next) => {
+    try {
+        // Get products created in the last 30 days, sorted by newest first
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const newArrivals = await Product.find({
+            display: true,
+            createdAt: { $gte: thirtyDaysAgo }
+        })
+        .sort({ createdAt: -1 })
+        .limit(10); // Limit to 10 newest products
+        
+        res.status(200).json({
+            success: true,
+            products: newArrivals,
+            productsCount: newArrivals.length,
+            message: "New arrivals fetched successfully"
         });
     } catch (error) {
         res.status(500).json({

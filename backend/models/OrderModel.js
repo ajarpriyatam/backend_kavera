@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
-    token_id: {
+    tokenId: {
       type: String,
       required: true,
     },
