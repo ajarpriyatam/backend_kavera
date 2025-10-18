@@ -11,12 +11,8 @@ const {
   getNewArrivals
 } = require("../controller/ProductCont");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
-const checkDatabaseConnection = require("../middleware/dbConnection");
 
 const router = express.Router();
-
-// Apply database connection check to all routes
-router.use(checkDatabaseConnection);
 
 router.route("/admin/products").get(getAllProductsAdmin);
 router.route("/products").get(getAllProducts);

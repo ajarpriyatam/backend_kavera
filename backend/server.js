@@ -15,8 +15,12 @@ const startServer = async () => {
     console.log("✅ Database connection established");
   } catch (error) {
     console.error("❌ Failed to connect to database:", error.message);
-    console.error("🛑 Server cannot start without database connection");
-    process.exit(1);
+    if (process.env.NODE_ENV === 'production') {
+      console.warn("⚠️ Continuing in production mode without database connection");
+    } else {
+      console.error("🛑 Server cannot start without database connection in development");
+      process.exit(1);
+    }
   }
 };
 

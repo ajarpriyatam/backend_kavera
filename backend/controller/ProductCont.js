@@ -61,6 +61,16 @@ exports.getAllProductsAdmin = catchAsyncErrors(async (req, res, next) => {
 });
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     try {
+        // Check database connection
+        const mongoose = require('mongoose');
+        if (mongoose.connection.readyState !== 1) {
+            return res.status(500).json({
+                success: false,
+                message: "Database connection error",
+                error: "Database is not connected. Please try again later."
+            });
+        }
+
         let ProductAll = await Product.find()
         let products = ProductAll.filter(product => product.display === true);
         res.status(200).json({
