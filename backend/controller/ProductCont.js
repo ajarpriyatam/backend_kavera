@@ -1,5 +1,4 @@
 const Product = require("../models/ProductModel");
-const { param } = require("../routes/ProdectRoute");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const cloudinary = require("cloudinary");

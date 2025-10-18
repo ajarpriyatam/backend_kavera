@@ -9,9 +9,19 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Connect to database
-connect().catch(error => {
-  // Database connection error handled silently
-});
+const startServer = async () => {
+  try {
+    await connect();
+    console.log("✅ Database connection established");
+  } catch (error) {
+    console.error("❌ Failed to connect to database:", error.message);
+    console.error("🛑 Server cannot start without database connection");
+    process.exit(1);
+  }
+};
+
+// Initialize database connection before starting server
+startServer();
 
 // Configure Cloudinary
 cloudinary.config({

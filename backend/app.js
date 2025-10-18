@@ -29,9 +29,13 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // API health check endpoint
 app.get("/api/health", (req, res) => {
+    const mongoose = require('mongoose');
+    const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+    
     res.json({ 
         status: "OK", 
         message: "Candle Backend API is running",
+        database: dbStatus,
         timestamp: new Date().toISOString()
     });
 });
