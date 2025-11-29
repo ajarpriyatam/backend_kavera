@@ -18,58 +18,33 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    scent: {
+      type: String,
+      required: true,
+    },
     quantity:{
       type: Number,
       required: true,
     }
   }],
-  coupon: {
-    couponName: {
-      type: String,
-    },
-    couponDiscount: {
-      type: Number,
-    },
-    couponType: {
-      type: String,
-    }
-  },
-  price: {
+  subtotal: {
     type: Number,
     required: true,
     default: 0,
   },
-  GST: {
+  shipping: {
     type: Number,
     required: true,
     default: 0,
-  },
-  discount: {
-    type: Number,
   },
   total: {
     type: Number,
     required: true,
     default: 0,
   },
-  creditCoupon: {
-    type: String,
-  },
   orderRemarks: {
     type: String,
     required: true
-  },
-  downPayment: {
-    type: Number,
-  },
-  clearPaymentDate: {
-    type: Date
-  },
-  outstandingBalence: {
-    type: Number,
-  },
-  deliveryCharges: {
-    type: Number,
   },
   destionationAddress: {
     addreslin1: {
@@ -77,10 +52,6 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },    
     city: {
-      type: String,
-      required: true,
-    },
-    district: {
       type: String,
       required: true,
     },
@@ -93,16 +64,30 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },
   },
-  logisticAgent: {
-    name: {
-      type: String
-    },    
-    orderDropDate: {
-      type: Date
-    },
-    orderReachDate: {
-      type: Date
-    }
+  // Customer Information
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  paymentMethod: {
+    type: String,
+    required: true,
+    enum: ["CRED", "CASH", "CARD", "UPI", "NET_BANKING"],
+    default: "UPI"
+  },
+  orderStatus: {
+    type: String,
+    required: true,
+    enum: ["PENDING","PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
+    default: "PENDING"
   },
   "orderID": {
     type: String,
@@ -112,15 +97,37 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  // Status timestamps
+  shippedAt: Date,
   deliveredAt: Date,
+  cancelledAt: Date,
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  razorpay_order_id: { 
+    type: String 
+  },
+  razorpay_payment_id: { 
+    type: String 
+  },
+  razorpay_signature: { 
+    type: String 
+  },
+  isCanceled: {
+    isCanceled: { type: Boolean, default: false },
+    refundStatus: {
+      type: String,
+      enum: ["processing", "approved", "issued"],
+    },
+  },
+  payment_method: {
+    type: String,
+    default: "cash",
+  },
+  paymentStatus: {
+    type: String,
+    enum: ["success", "failed", "refunded"],
   },
 });
 

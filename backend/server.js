@@ -2,6 +2,7 @@ const app = require("./app.js");
 const dotenv = require('dotenv')
 const connect = require("./db/connect.js");
 const cloudinary = require("cloudinary");
+const Razorpay = require("razorpay");
 
 // Load environment variables - try both local and Vercel
 if (process.env.NODE_ENV !== 'production') {
@@ -27,6 +28,11 @@ cloudinary.config({
   cloud_name: process.env.CLOUDNAME,
   api_key: process.env.APIKEY,
   api_secret: process.env.APISECRET,
+});
+
+exports.instance = new Razorpay({
+  key_id: process.env.RAZORPAY_API_KEY,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const PORT = process.env.PORT || 4000;

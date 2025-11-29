@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.6",
@@ -22,6 +23,7 @@
     "mongoose": "^8.6.3",
     "nodemailer": "^6.9.15",
     "nodemon": "^3.1.7",
+    "razorpay": "^2.9.6",
     "validator": "^13.12.0",
     "webfontloader": "^1.6.28"
   }

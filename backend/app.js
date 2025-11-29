@@ -22,6 +22,14 @@ app.use("/api/v2", user);
 app.use("/api/v2", order);
 app.use("/api/v2", coupon);
 
+app.get("/api/getkey", (req, res) => {
+    res.status(200).json({
+        key: process.env.RAZORPAY_API_KEY,
+        success: true,
+        message: "Get Razorpay API key from backend to frontend",
+    });
+});
+
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // Serve static files from public directory
@@ -31,9 +39,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.get("/api/health", (req, res) => {
     const mongoose = require('mongoose');
     const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
-    
-    res.json({ 
-        status: "OK", 
+
+    res.json({
+        status: "OK",
         message: "Candle Backend API is running",
         database: dbStatus,
         timestamp: new Date().toISOString()
@@ -42,10 +50,10 @@ app.get("/api/health", (req, res) => {
 
 // Catch-all handler for API routes
 app.get("*", (req, res) => {
-    res.status(404).json({ 
+    res.status(404).json({
         error: "API endpoint not found",
         message: "Please check your API endpoint URL"
     });
 });
- 
+
 module.exports = app;
